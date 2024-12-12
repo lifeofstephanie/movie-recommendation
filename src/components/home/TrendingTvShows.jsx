@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { Link } from "react-router-dom";
 
 export default function TrendingTvShows() {
+  const API_KEY = process.env.REACT_APP_BEARER_API_KEY
   const carouselRef = useRef(null);
 
   const { isLoading, error, data } = useQuery({
@@ -11,8 +12,7 @@ export default function TrendingTvShows() {
     queryFn: () =>
       fetch("https://api.themoviedb.org/3/trending/tv/day", {
         headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxZTI5OGRhZjkzODE4MDc0Njk3NzAxZGViNTY3YzVmMiIsIm5iZiI6MTcyNzAwMDYzNS4wOTMsInN1YiI6IjY2ZWZmMDNiOTJkMzk2ODUzODNiNjMzOCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.nUaU-2eUNoieiGR7aoanVCy_6TlRgVq6xLaZiu2aQlg",
+          Authorization:`Bearer ${API_KEY}`
         },
       }).then((res) => res.json()),
   });

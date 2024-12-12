@@ -1,7 +1,3 @@
-// import { useState } from "react";
-// import {useParams } from "react-router-dom";
-// import background from '../assets/hero-bg.jpg'
-
 const Hero = () => {
   return (
     <section className="bg-[#000] text-[#fff] py-20 poster">

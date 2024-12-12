@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { Link, useParams } from "react-router-dom";
 
 const MovieDetails = () => {
+  const API_KEY = process.env.REACT_APP_BEARER_API_KEY
   const { id } = useParams();
   const carouselRef = useRef(null);
   const scrollLeft = () => {
@@ -28,7 +29,7 @@ const MovieDetails = () => {
       fetch(`https://api.themoviedb.org/3/movie/${id}?language=en-US`, {
         headers: {
           Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxZTI5OGRhZjkzODE4MDc0Njk3NzAxZGViNTY3YzVmMiIsIm5iZiI6MTcyNzAwMDYzNS4wOTMsInN1YiI6IjY2ZWZmMDNiOTJkMzk2ODUzODNiNjMzOCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.nUaU-2eUNoieiGR7aoanVCy_6TlRgVq6xLaZiu2aQlg",
+            `Bearer ${API_KEY}`,
         },
       }).then((res) => res.json()),
   });
@@ -42,8 +43,7 @@ const MovieDetails = () => {
     queryFn: () =>
       fetch(`https://api.themoviedb.org/3/movie/${id}/recommendations`, {
         headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxZTI5OGRhZjkzODE4MDc0Njk3NzAxZGViNTY3YzVmMiIsIm5iZiI6MTcyNzAwMDYzNS4wOTMsInN1YiI6IjY2ZWZmMDNiOTJkMzk2ODUzODNiNjMzOCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.nUaU-2eUNoieiGR7aoanVCy_6TlRgVq6xLaZiu2aQlg",
+          Authorization: `Bearer ${API_KEY}`
         },
       }).then((res) => res.json()),
   });
