@@ -70,7 +70,6 @@ const MovieDetails = () => {
             />
           </div>
         </div>
-        {/* TV Details */}
         <div className="space-y-6 mb-4">
           <div>
             <h1 className="text-4xl font-bold tracking-tight lg:text-5xl">
@@ -84,7 +83,7 @@ const MovieDetails = () => {
             {movieData.genres && movieData.genres.length > 0
               ? movieData.genres.map((genre) => (
                   <div
-                    key={genre.id} // Add a unique key to each element
+                    key={genre.id}
                     className="bg-purple-500/10 text-purple-400 hover:bg-purple-500/20 p-2 rounded m-1"
                   >
                     {genre.name}
