@@ -26,9 +26,10 @@ const Header = () => {
             </li>
           </ul>
         </nav>
+        <Link to={'/signin'}>
         <button className="border border-black rounded-md p-2 h-[40px] flex items-center justify-center">
           Sign In
-        </button>
+        </button></Link>
       </div>
     </div>
   );

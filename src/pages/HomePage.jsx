@@ -1,8 +1,8 @@
-import Hero from "../components/Hero";
+import Hero from "../components/gen/Hero";
 import PopularMovies from "../components/home/PopularMovies";
 import TrendingTvShows from "../components/home/TrendingTvShows";
 
-export default function MovieGrid() {
+export default function HomePage() {
   // const movies = [
   //   { id: 1, title: "Inception", genre: "Sci-Fi", rating: 8.8 },
   //   { id: 2, title: "The Shawshank Redemption", genre: "Drama", rating: 9.3 },

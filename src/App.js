@@ -1,11 +1,14 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Footer from "./components/Footer";
-import Header from "./components/Header";
-import MovieGrid from "./pages/Movies";
-import TVSeriesDetails from "./components/Movie/TvDetails";
-import MovieDetails from "./components/Movie/MovieDetails";
+import Footer from "./components/gen/Footer";
+import Header from "./components/gen/Header";
+import HomePage from "./pages/HomePage";
+import TVSeriesDetails from "./pages/TvDetails";
+import MovieDetails from "./pages/MovieDetails";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import Signin from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
+import MoviesList from "./pages/Genres";
 
 function App() {
   const queryClient = new QueryClient();
@@ -17,10 +20,12 @@ function App() {
           <Header />
           <main className="flex-grow">
             <Routes>
-              <Route path="/" element={<MovieGrid />} />
+              <Route path="/" element={<HomePage />} />
               <Route path="/tv/:id" element={<TVSeriesDetails />} />
               <Route path="/movie/:id" element={<MovieDetails />} />
-              {/* <Route path="*" element={<div>404 - Page Not Found</div>} /> */}
+              <Route path="/signin" element={<Signin />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/genres" element={<MoviesList />} />
             </Routes>
           </main>
           <Footer />

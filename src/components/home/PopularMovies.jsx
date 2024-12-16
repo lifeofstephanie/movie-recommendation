@@ -20,7 +20,7 @@ export default function PopularMovies() {
       ).then((res) => res.json()),
   });
   if (isLoading) return " Loading ....";
-  if (error) return "There was an error: " + error.message;
+  if (error) return "An error has occurred: " + error.message;
 
   const scrollLeft = () => {
     if (carouselRef.current) {
