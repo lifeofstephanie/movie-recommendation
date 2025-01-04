@@ -80,8 +80,8 @@ const MovieDetails = () => {
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
-            {movieData.genres && movieData.genres.length > 0
-              ? movieData.genres.map((genre) => (
+            {movieData?.genres && movieData?.genres?.length > 0
+              ? movieData?.genres?.map((genre) => (
                   <div
                     key={genre.id}
                     className="bg-purple-500/10 text-purple-400 hover:bg-purple-500/20 p-2 rounded m-1"
@@ -139,7 +139,7 @@ const MovieDetails = () => {
               ref={carouselRef}
               className="flex overflow-x-scroll space-x-4 scrollbar-hide"
             >
-              {recData.results.map((movie) => (
+              {recData?.results?.map((movie) => (
                 <div
                   key={movie.id}
                   className="min-w-[200px] bg-white shadow-md rounded-lg overflow-hidden flex flex-col"

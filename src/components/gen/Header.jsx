@@ -1,35 +1,51 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const Header = () => {
   return (
     <div className="border-b">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold">
+        <NavLink to="/" className="text-2xl font-bold">
           MovieMate
-        </Link>
+        </NavLink>
         <nav>
           <ul className="flex space-x-4 gap-2">
             <li>
-              <Link to="/" className="">
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  isActive ? "font-bold" : ""
+                }
+              >
                 Home
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link to="/genres" className="">
+              <NavLink
+                to="/genres"
+                className={({ isActive }) =>
+                  isActive ? "font-bold" : ""
+                }
+              >
                 Genres
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link to="/watchlist" className="">
+              <NavLink
+                to="/watchlist"
+                className={({ isActive }) =>
+                  isActive ? "font-bold" : ""
+                }
+              >
                 Watchlist
-              </Link>
+              </NavLink>
             </li>
           </ul>
         </nav>
-        <Link to={'/signin'}>
-        <button className="border border-black rounded-md p-2 h-[40px] flex items-center justify-center">
-          Sign In
-        </button></Link>
+        <NavLink to="/signin">
+          <button className="border border-black rounded-md p-2 h-[40px] flex items-center justify-center">
+            Sign In
+          </button>
+        </NavLink>
       </div>
     </div>
   );

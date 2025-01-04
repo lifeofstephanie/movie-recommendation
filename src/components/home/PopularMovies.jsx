@@ -1,17 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 import { PlusCircle } from "lucide-react";
 import { useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function PopularMovies() {
   const API_KEY = process.env.REACT_APP_BEARER_API_KEY
   const carouselRef = useRef(null);
+  const navigate = useNavigate()
 
   const { isLoading, error, data } = useQuery({
     queryKey: ["popularMovies"],
     queryFn: () =>
       fetch(
-        "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1",
+        "https://api.themoviedb.org/3/movie/popular?language=en-US",
         {
           headers: {
             Authorization:`Bearer ${API_KEY}`
@@ -79,6 +80,16 @@ export default function PopularMovies() {
                 </div>
               </div>
             ))}
+            <div
+              className="min-w-[200px] bg-gray-200 shadow-md rounded-lg flex flex-col justify-center items-center"
+            >
+              <button
+                onClick={() => navigate("/genres")}
+                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-500 text-center"
+              >
+                See More
+              </button>
+            </div>
           </div>
           <button
             className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full z-10 hover:bg-gray-700"
