@@ -9,25 +9,48 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Signin from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import MoviesList from "./pages/Genres";
+import { ToastContainer } from "react-toastify";
+import WatchlistPage from "./components/wishlisht/watchlist";
+import { useEffect, useState } from "react";
+import { Offline } from "./pages/Offline";
 
 function App() {
   const queryClient = new QueryClient();
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  useEffect(() => {
+    const updateOnlineStatus = () => setIsOnline(navigator.onLine);
+
+    window.addEventListener("online", updateOnlineStatus);
+    window.addEventListener("offline", updateOnlineStatus);
+    return () => {
+      window.removeEventListener("online", updateOnlineStatus);
+      window.removeEventListener("offline", updateOnlineStatus);
+    };
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
+        <ToastContainer />
         <div className="min-h-screen flex flex-col">
           <Header />
+
           <main className="flex-grow">
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/tv/:id" element={<TVSeriesDetails />} />
-              <Route path="/movie/:id" element={<MovieDetails />} />
-              <Route path="/signin" element={<Signin />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/genres" element={<MoviesList />} />
-            </Routes>
+            {isOnline ? (
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/tv/:id" element={<TVSeriesDetails />} />
+                <Route path="/movie/:id" element={<MovieDetails />} />
+                <Route path="/signin" element={<Signin />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/genres" element={<MoviesList />} />
+                <Route path="/watchlist" element={<WatchlistPage />} />
+              </Routes>
+            ) : (
+              <Offline />
+            )}
           </main>
+
           <Footer />
         </div>
       </BrowserRouter>

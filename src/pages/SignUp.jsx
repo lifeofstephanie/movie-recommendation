@@ -1,108 +1,197 @@
 import React, { useState } from "react";
-// import { AuthLayout } from "../components/auth/AuthLayout";
-// import { Icons } from "../components/ui/icons";
-// import { Link } from "react-router-dom";
-import { useForm } from "react-hook-form";
-// import { analytics } from "../firebase";
+import { AuthLayout } from "../components/auth/AuthLayout";
+import { Icons } from "../components/ui/icons";
+import { Link, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { Box, Button, TextField, Typography } from "@mui/material";
 import { auth } from "../firebase";
+import { toast } from "react-toastify";
+import { updateProfile } from "firebase/auth"; // Import the updateProfile function
 
 export default function SignUp() {
   const [isLoading, setIsLoading] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    trigger,
-  } = useForm();
-  const onSubmit = async (data, event) => {
-    try {
-      event.preventDefault();
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        data.email,
-        data.password
-        // data.name
-      );
-      setIsLoading(true);
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordRequirements, setPasswordRequirements] = useState({
+    length: false,
+    uppercase: false,
+    lowercase: false,
+    number: false,
+    specialChar: false,
+  });
+  const navigate = useNavigate();
 
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 3000);
-    } catch (e) {
-      console.log(e.message);
+  // Password validation criteria (using regular expressions)
+  const passwordValidators = {
+    length: (password) => password.length >= 8,
+    uppercase: (password) => /[A-Z]/.test(password),
+    lowercase: (password) => /[a-z]/.test(password),
+    number: (password) => /\d/.test(password),
+    specialChar: (password) => /[!@#$%^&*()_+={}\[\]:;"'<>,.?/-]/.test(password),
+  };
+
+  // Handle password input and validate on each change
+  const handlePasswordChange = (e) => {
+    const value = e.target.value;
+    setPassword(value);
+
+    // Check each validation rule
+    setPasswordRequirements({
+      length: passwordValidators.length(value),
+      uppercase: passwordValidators.uppercase(value),
+      lowercase: passwordValidators.lowercase(value),
+      number: passwordValidators.number(value),
+      specialChar: passwordValidators.specialChar(value),
+    });
+  };
+
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+
+    // Check if the password meets the requirements
+    if (!Object.values(passwordRequirements).every((req) => req)) {
+      toast.error('Password must be at least 8 characters long, and include uppercase, lowercase, numbers, and special characters.');
+      setIsLoading(false);
+      return;  // Don't proceed with sign-up
+    }
+
+    try {
+      // Step 1: Create the user with email and password
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Step 2: Update the user's profile with the name using the modular API
+      await updateProfile(user, {
+        displayName: name,
+      });
+
+      // Step 3: Notify the user and navigate to sign in
+      toast.success('Sign-Up Successful');
+      navigate('/');
+    } catch (err) {
+      toast.error(err.message);
     }
   };
 
-  // async function onSubmit(event) {}
-
   return (
-    <Box className={"flex justify-center items-center h-[100vh]"}>
-      <Box
-        component={"form"}
-        onSubmit={handleSubmit(onSubmit)}
-        className="w-[400px] p-3 border-[#ccc] rounded-md"
-      >
-        <Typography
-          variant="h4"
-          component="h2"
-          align="center"
-          gutterBottom
-          color="primary"
-        >
-          Sign Up
-        </Typography>
-        <TextField
-          fullWidth
-          label="Full Name"
-          {...register("fullName", { required: "Full Name is required" })}
-          error={!!errors.fullName}
-          helperText={errors.fullName?.message}
-          margin="normal"
-          onBlur={() => trigger("fullName")}
-        />
-        <TextField
-          fullWidth
-          label="Email"
-          {...register("email", {
-            required: "Email is required",
-            pattern: {
-              value: /^[a-zA-z0-9._%+-]+@[a-zA-z0-9.-]+\.[a-zA-z]{2,4}$/,
-              message: "Invalid Email Address",
-            },
-          })}
-          error={!!errors.email}
-          helperText={errors.email?.message}
-          margin="normal"
-          onBlur={() => trigger("email")}
-        />
-        <TextField
-          fullWidth
-          label="Password"
-          type="password"
-          {...register("password", {
-            required: "Password is required",
-            minLength: {
-              value: 6,
-              message: "Password must be at least 6 characters",
-            },
-          })}
-          error={!!errors.password}
-          helperText={errors.password?.message}
-          margin="normal"
-          onBlur={() => trigger("password")}
-        />
-        <Button
-          type="submit"
-          variant="contained"
-          fullWidth
-          sx={{ marginTop: 2, padding: 1 }}
-          // onClick={setIsLoading(true)}
-        >
-          Sign Up
-        </Button>
-      </Box>
-    </Box>
+    <AuthLayout title="Sign Up">
+      <form onSubmit={handleSignup} className="space-y-6">
+        <div className="rounded-md shadow-sm space-y-2 text-black">
+          <div>
+            <label htmlFor="full-name" className="sr-only">
+              Full Name
+            </label>
+            <input
+              id="full-name"
+              name="name"
+              type="text"
+              autoComplete="full-name"
+              required
+              className="rounded-md relative block w-full px-3 py-2 border border-gray-700 placeholder-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm h-[50px]"
+              placeholder="Full Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor="email-address" className="sr-only">
+              Email address
+            </label>
+            <input
+              id="email-address"
+              name="email"
+              type="email"
+              autoComplete="email"
+              required
+              className="rounded-md relative block w-full px-3 py-2 border border-gray-700 placeholder-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm h-[50px]"
+              placeholder="Email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor="password" className="sr-only">
+              Password
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              required
+              className="rounded-md relative block w-full px-3 py-2 border border-gray-700 placeholder-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm h-[50px]"
+              placeholder="Password"
+              value={password}
+              onChange={handlePasswordChange}
+            />
+            {/* Password Requirements */}
+            <div className="mt-2 text-sm">
+              <ul className="space-y-1">
+                {Object.keys(passwordRequirements).map((req, idx) => (
+                  <li
+                    key={idx}
+                    className={`flex items-center ${passwordRequirements[req] ? "text-green-500" : "text-red-500"}`}
+                  >
+                    <span className="mr-2">
+                      {passwordRequirements[req] ? "✔" : "✘"}
+                    </span>
+                    {req === "length" && "At least 8 characters"}
+                    {req === "uppercase" && "At least one uppercase letter"}
+                    {req === "lowercase" && "At least one lowercase letter"}
+                    {req === "number" && "At least one number"}
+                    {req === "specialChar" && "At least one special character"}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            <input
+              id="remember-me"
+              name="remember-me"
+              type="checkbox"
+              className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-700 rounded bg-gray-800"
+            />
+            <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-300">
+              Remember me
+            </label>
+          </div>
+
+          <div className="text-sm">
+            <Link to="/forgot-password" className="font-medium text-blue-400 hover:text-blue-300">
+              Forgot your password?
+            </Link>
+          </div>
+        </div>
+
+        <div>
+          <button
+            type="submit"
+            className="group relative w-full flex justify-center items-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+            disabled={isLoading}
+          >
+            {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+            Sign up
+          </button>
+        </div>
+      </form>
+
+      <div className="mt-6 text-center">
+        <p className="text-sm text-gray-400">
+          Already have an account?{" "}
+          <Link to="/signin" className="font-medium text-blue-400 hover:text-blue-300">
+            Sign In
+          </Link>
+        </p>
+      </div>
+    </AuthLayout>
   );
 }

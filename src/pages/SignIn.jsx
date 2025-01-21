@@ -1,23 +1,36 @@
 import React, { useState } from "react";
 import { AuthLayout } from "../components/auth/AuthLayout";
 import { Icons } from "../components/ui/icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
+import { toast } from "react-toastify";
 
 export default function SignIn() {
   const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const navigate = useNavigate()
 
-  async function onSubmit(event) {
-    event.preventDefault();
+  const handleSignIn = async(e)=> {
+    e.preventDefault();
     setIsLoading(true);
 
     setTimeout(() => {
       setIsLoading(false);
     }, 3000);
+    try{
+      await signInWithEmailAndPassword(auth, email, password)
+      toast.success('Sign In Successful')
+      navigate('/')
+    }catch(err){
+      toast.error(err.message)
+    }
   }
 
   return (
     <AuthLayout title="Sign In">
-      <form onSubmit={onSubmit} className=" space-y-6 ">
+      <form onSubmit={handleSignIn} className=" space-y-6 ">
         <div className="rounded-md shadow-sm space-y-2 text-black">
           <div >
             <label htmlFor="email-address" className="sr-only">
@@ -31,6 +44,8 @@ export default function SignIn() {
               required
               className="rounded-md relative block w-full px-3 py-2 border border-gray-700 placeholder-gray-500  focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm h-[50px] "
               placeholder="Email address"
+              value={email}
+              onChange={(e)=>setEmail(e.target.value)}
             />
           </div>
           <div>
@@ -45,6 +60,8 @@ export default function SignIn() {
               required
               className="rounded-md relative block w-full px-3 py-2 border border-gray-700 placeholder-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm h-[50px] "
               placeholder="Password"
+              value={password}
+              onChange={(e)=>setPassword(e.target.value)}
             />
           </div>
         </div>

@@ -1,24 +1,26 @@
 import { useQuery } from "@tanstack/react-query";
 import { PlusCircle } from "lucide-react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import CategorizeMovieModal from "../wishlisht/categories";
 
 export default function PopularMovies() {
-  const API_KEY = process.env.REACT_APP_BEARER_API_KEY
+  const API_KEY = process.env.REACT_APP_BEARER_API_KEY;
   const carouselRef = useRef(null);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   const { isLoading, error, data } = useQuery({
     queryKey: ["popularMovies"],
     queryFn: () =>
-      fetch(
-        "https://api.themoviedb.org/3/movie/popular?language=en-US",
-        {
-          headers: {
-            Authorization:`Bearer ${API_KEY}`
-          },
-        }
-      ).then((res) => res.json()),
+      fetch("https://api.themoviedb.org/3/movie/popular?language=en-US", {
+        headers: {
+          Authorization: `Bearer ${API_KEY}`,
+        },
+      }).then((res) => res.json()),
   });
   if (isLoading) return " Loading ....";
   if (error) return "An error has occurred: " + error.message;
@@ -73,16 +75,19 @@ export default function PopularMovies() {
                   </p>
                 </div>
                 <div>
-                  <button className="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-500 flex gap-2 justify-center items-center">
+                  <button className="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-500 flex gap-2 justify-center items-center" onClick={openModal}>
                     <PlusCircle className="h-5 w-5" />
                     Add to WatchList
                   </button>
                 </div>
+                <CategorizeMovieModal
+                  movie={movie}
+                  isOpen={isModalOpen}
+                  closeModal={closeModal}
+                />
               </div>
             ))}
-            <div
-              className="min-w-[200px] bg-gray-200 shadow-md rounded-lg flex flex-col justify-center items-center"
-            >
+            <div className="min-w-[200px] bg-gray-200 shadow-md rounded-lg flex flex-col justify-center items-center">
               <button
                 onClick={() => navigate("/genres")}
                 className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-500 text-center"
