@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import Modal from "react-modal"; // Import react-modal
+import Modal from "react-modal";
 import { toast } from "react-toastify";
-import { addMovieToCategory } from "../../firebase"; // Firebase function to store movie
+import { addMovieToCategory } from "../../firebase"; 
 
-// Make sure to set the app element for accessibility
 Modal.setAppElement("#root");
 
 const CategorizeMovieModal = ({ movie, isOpen, closeModal }) => {

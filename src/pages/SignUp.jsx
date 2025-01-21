@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { toast } from "react-toastify";
-import { updateProfile } from "firebase/auth"; // Import the updateProfile function
+import { updateProfile } from "firebase/auth"; 
 
 export default function SignUp() {
   const [isLoading, setIsLoading] = useState(false);
@@ -21,7 +21,6 @@ export default function SignUp() {
   });
   const navigate = useNavigate();
 
-  // Password validation criteria (using regular expressions)
   const passwordValidators = {
     length: (password) => password.length >= 8,
     uppercase: (password) => /[A-Z]/.test(password),
@@ -30,12 +29,10 @@ export default function SignUp() {
     specialChar: (password) => /[!@#$%^&*()_+={}\[\]:;"'<>,.?/-]/.test(password),
   };
 
-  // Handle password input and validate on each change
   const handlePasswordChange = (e) => {
     const value = e.target.value;
     setPassword(value);
 
-    // Check each validation rule
     setPasswordRequirements({
       length: passwordValidators.length(value),
       uppercase: passwordValidators.uppercase(value),
@@ -53,24 +50,20 @@ export default function SignUp() {
       setIsLoading(false);
     }, 3000);
 
-    // Check if the password meets the requirements
     if (!Object.values(passwordRequirements).every((req) => req)) {
       toast.error('Password must be at least 8 characters long, and include uppercase, lowercase, numbers, and special characters.');
       setIsLoading(false);
-      return;  // Don't proceed with sign-up
+      return; 
     }
 
     try {
-      // Step 1: Create the user with email and password
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Step 2: Update the user's profile with the name using the modular API
       await updateProfile(user, {
         displayName: name,
       });
 
-      // Step 3: Notify the user and navigate to sign in
       toast.success('Sign-Up Successful');
       navigate('/');
     } catch (err) {
@@ -129,7 +122,6 @@ export default function SignUp() {
               value={password}
               onChange={handlePasswordChange}
             />
-            {/* Password Requirements */}
             <div className="mt-2 text-sm">
               <ul className="space-y-1">
                 {Object.keys(passwordRequirements).map((req, idx) => (

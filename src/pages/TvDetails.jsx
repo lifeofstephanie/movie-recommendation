@@ -55,7 +55,6 @@ const TVSeriesDetails = () => {
     <div className="min-h-screen bg-white text-black">
       <div className="container px-4">
         <div className="grid gap-6  lg:gap-12 px-4">
-          {/* Poster */}
           <div className=" overflow-hidden rounded-lg" />
           <div className="bg-gradient-to-t from-black/50 to-transparent w-[200px]">
             <img
@@ -68,7 +67,6 @@ const TVSeriesDetails = () => {
               className=""
             />
           </div>
-          {/* TV Details */}
         </div>
         <div className="space-y-6 mb-4 px-4">
           <div>
@@ -87,7 +85,7 @@ const TVSeriesDetails = () => {
             {tvData.genres && tvData.genres.length > 0
               ? tvData.genres.map((genre) => (
                   <div
-                    key={genre.id} // Add a unique key to each element
+                    key={genre.id}
                     className="bg-purple-500/10 text-purple-400 hover:bg-purple-500/20 p-2 rounded m-1"
                   >
                     {genre.name}
@@ -120,14 +118,12 @@ const TVSeriesDetails = () => {
             </div>
           </div>
 
-          {/* TMDb Button */}
           <hr className="bg-gray-800 w-full" />
           <button className=" flex gap-2  bg-blue-600 text-white hover:bg-blue-500 h-[50px] px-2 rounded-md justify-center items-center">
             <PlusCircle className="h-5 w-5" />
             Add to WatchList
           </button>
         </div>
-        {/*Movie Recommendation */}
         <div className="container mx-auto px-4 relative">
           <h2 className="text-3xl font-bold text-gray-800 mb-6">
             More Like This

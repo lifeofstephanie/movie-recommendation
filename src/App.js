@@ -10,7 +10,7 @@ import Signin from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import MoviesList from "./pages/Genres";
 import { ToastContainer } from "react-toastify";
-import WatchlistPage from "./components/wishlisht/watchlist";
+import WatchlistPage from "./pages/watchlist";
 import { useEffect, useState } from "react";
 import { Offline } from "./pages/Offline";
 

@@ -56,7 +56,6 @@ const MovieDetails = () => {
     <div className="min-h-screen bg-white text-black">
       <div className="container px-4">
         <div className="grid gap-6  lg:gap-12">
-          {/* Poster */}
           <div className=" overflow-hidden rounded-lg" />
           <div className="bg-gradient-to-t from-black/50 to-transparent w-[200px]">
             <img
@@ -116,14 +115,12 @@ const MovieDetails = () => {
             </div>
           </div>
 
-          {/* TMDb Button */}
           <hr className="bg-gray-800 w-full" />
           <button className=" flex gap-2 bg-blue-600 text-white hover:bg-blue-500 h-[50px] px-2 rounded-md justify-center items-center">
             <PlusCircle className="h-5 w-5" />
             Add to WatchList
           </button>
         </div>
-        {/*Movie Recommendation */}
         <div className="container mx-auto px-4 relative">
           <h2 className="text-3xl font-bold text-gray-800 mb-6">
             More Like This

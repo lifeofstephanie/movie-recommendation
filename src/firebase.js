@@ -1,4 +1,3 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
@@ -28,10 +27,10 @@ const firebaseConfig = {
 
 export const addMovieToCategory = async (movieId, category) => {
   try {
-    const movieRef = doc(db, "watchlist", movieId); // Movie document reference
+    const movieRef = doc(db, "watchlist", movieId); 
     await setDoc(movieRef, {
-      category: category, // Category (e.g., 'Currently Watching', 'Watched')
-      addedAt: new Date(), // Timestamp for when it was added
+      category: category, 
+      addedAt: new Date(),
     });
 
     console.log(`Movie added to ${category} category!`);
@@ -40,7 +39,6 @@ export const addMovieToCategory = async (movieId, category) => {
   }
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = initializeFirestore(app, {
