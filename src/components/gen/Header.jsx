@@ -112,7 +112,7 @@ const Header = () => {
                   : user.email[0].toUpperCase()}
               </button>
               {dropdownOpen && (
-                <div className="absolute right-[0px] mt-2 w-[150px] bg-white text-black rounded-md shadow-lg">
+                <div className="absolute right-[0px] mt-2 w-[150px] bg-white text-black rounded-md shadow-lg z-50">
                   <p
                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                     onClick={() => navigate("/profile")}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
 import { toast } from "react-toastify";
-import { addMovieToCategory } from "../../firebase"; 
+import { addMovieToCategory } from "../../firebase";
 
 Modal.setAppElement("#root");
 
@@ -33,9 +33,17 @@ const CategorizeMovieModal = ({ movie, isOpen, closeModal }) => {
       <h3 className="text-xl font-semibold">Select Movie Category</h3>
       <div className="mt-4">
         <button
-          onClick={() => setCategory("Currently Watching")}
+          onClick={() => setCategory("Want To Watch")}
           className={`w-full py-2 px-4 border rounded-md ${
-            category === "Currently Watching" ? "bg-blue-500 text-white" : ""
+            category === "Want To Watch" ? "bg-blue-500 text-white" : ""
+          }`}
+        >
+          Want To Watch
+        </button>
+        <button
+          onClick={() => setCategory("Currently Watching")}
+          className={`w-full py-2 px-4 border rounded-md mt-2 ${
+            category === "Currently Watching" ? "bg-green-500 text-white" : ""
           }`}
         >
           Currently Watching
@@ -43,18 +51,10 @@ const CategorizeMovieModal = ({ movie, isOpen, closeModal }) => {
         <button
           onClick={() => setCategory("Watched")}
           className={`w-full py-2 px-4 border rounded-md mt-2 ${
-            category === "Watched" ? "bg-green-500 text-white" : ""
+            category === "Watched" ? "bg-purple-500 text-white" : ""
           }`}
         >
           Watched
-        </button>
-        <button
-          onClick={() => setCategory("Already Watched")}
-          className={`w-full py-2 px-4 border rounded-md mt-2 ${
-            category === "Already Watched" ? "bg-purple-500 text-white" : ""
-          }`}
-        >
-          Already Watched
         </button>
       </div>
       <div className="mt-4 flex justify-between">

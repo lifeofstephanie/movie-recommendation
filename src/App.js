@@ -31,7 +31,14 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <ToastContainer />
+        <ToastContainer autoClose={1000} 
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover/>
         <div className="min-h-screen flex flex-col">
           <Header />
 
